@@ -40,7 +40,7 @@ public class Girl : MonoBehaviour {
 		if (Mathf.Abs (value) > 0) {
 			Vector2 vel = body.velocity;
 			if (Time.time - walkTime > 4f) {
-				vel.x = value * speed*2f;
+				vel.x = value * speed*1.5f;
 
 			//	Debug.Log ("run);
 			} else {
