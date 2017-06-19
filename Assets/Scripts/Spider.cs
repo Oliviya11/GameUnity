@@ -8,8 +8,12 @@ public class Spider : MonoBehaviour {
 	Vector2 moveBy,  moveUp, moveDown;
 	Vector3 pos;
 	float changing_time;
+	float posToMoveUp;
 	public float posToMoveDown;
 	public float wait_time;
+	public float radius;
+
+	bool attack = true;
 	// Use this for initialization
 	void Start () {
 		body = GetComponent<Rigidbody2D> ();
@@ -18,24 +22,27 @@ public class Spider : MonoBehaviour {
 		moveDown = new Vector2 (0, -speed);
 		moveBy = moveDown;
 	//	changing_time = wait_time;
+		posToMoveUp = pos.y;
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		move ();
-
+		OnGirlNoticed ();
 	}
 	 
 	void move() {
 		if (changing_time <= 0) {
-			if (transform.localPosition.y > pos.y) {
+			if (transform.localPosition.y > posToMoveUp) {
 				changing_time = wait_time;
 				moveBy = moveDown;
-			//	body.MovePosition (body.position + moveBy * Time.fixedDeltaTime);
+				attack = true;
 			} else if (transform.localPosition.y < posToMoveDown) {
-				changing_time = wait_time;
 				moveBy = moveUp;
-				//body.MovePosition (body.position + moveBy * Time.fixedDeltaTime);
+				if (!attack)
+					changing_time = 0;
+				else 
+					changing_time = wait_time;
 			}
 			body.MovePosition (body.position + moveBy * Time.fixedDeltaTime);
 
@@ -43,16 +50,45 @@ public class Spider : MonoBehaviour {
 			waitForAWhile ();
 		}
 	}
-	/*
-	IEnumerator wait(Vector3 dir) {
-		moveBy = dir;
-		yield return new WaitForSeconds (wait_time);
-
-	}
-	*/
 	void waitForAWhile() {
 		changing_time -= Time.deltaTime;
 	}
 
+	void OnTriggerEnter2D(Collider2D collider) {
+		Girl girl = collider.GetComponent<Girl> ();
 
+		if (girl != null) {
+			//LevelController.levelController.decreaseAntidoteNumber ();
+			girl.scream ();
+			if (!LevelController.levelController.hasAntidote ()) {
+				girl.setDead (true);
+			
+			} else {
+				girl.hurtAnimation ();
+			}
+
+				
+		}
+	}
+	void OnTriggerExit2D(Collider2D collider) {
+		Girl girl = collider.GetComponent<Girl> ();
+		if (girl != null) {
+			LevelController.levelController.decreaseAntidoteNumber ();
+			girl.stopHurtAnimation ();
+		}
+	}
+
+	void OnGirlNoticed() {
+		
+		if (Mathf.Abs (Girl.copy_girl.transform.position.y - transform.position.y) <= radius
+		    && Mathf.Abs (Girl.copy_girl.transform.position.x - transform.position.x) <= 2f && attack) {
+
+			if (Girl.copy_girl.transform.position.y + 1.5 < transform.position.y && attack) {
+				body.MovePosition (body.position + moveDown * Time.fixedDeltaTime);
+			} else {
+				attack = false;
+			}
+
+		} 
+	}
 }
