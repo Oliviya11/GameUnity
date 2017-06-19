@@ -216,11 +216,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4610424390838566, guid: 4bb4108bc6e98f743ba9e330180e4924, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.16
+      value: -3.53
       objectReference: {fileID: 0}
     - target: {fileID: 4610424390838566, guid: 4bb4108bc6e98f743ba9e330180e4924, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -3.1
+      value: 0.23
       objectReference: {fileID: 0}
     - target: {fileID: 4610424390838566, guid: 4bb4108bc6e98f743ba9e330180e4924, type: 2}
       propertyPath: m_LocalPosition.z
@@ -281,7 +281,7 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
   m_Points:
-  - {x: -2.2328722, y: 0.30061477}
+  - {x: -2.8973246, y: 0.36203596}
   - {x: 1.8665937, y: 0.35526502}
 --- !u!212 &1521802150
 SpriteRenderer:
@@ -673,7 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82fd58677aa5174bb4b267b2cb07d75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 2
   maxJumpTime: 2
   jumpSpeed: 3
 --- !u!50 &2052248280

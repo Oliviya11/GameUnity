@@ -11,6 +11,7 @@ public class Girl : MonoBehaviour {
 	bool jumpActive = false;
 	float jumpTime = 0f;
 	Transform heroParent = null;
+	float walkTime = 0;
 
 	public float maxJumpTime = 2f;
 	public float jumpSpeed = 2f;
@@ -38,11 +39,18 @@ public class Girl : MonoBehaviour {
 	{
 		if (Mathf.Abs (value) > 0) {
 			Vector2 vel = body.velocity;
-			vel.x = value * speed;
+			if (Time.time - walkTime > 4f) {
+				vel.x = value * speed*2f;
+
+			//	Debug.Log ("run);
+			} else {
+				
+				vel.x = value * speed;
+			}
 			body.velocity = vel;
 
 		} else {
-			
+			walkTime = Time.time;
 		}
 	}
 
@@ -58,9 +66,16 @@ public class Girl : MonoBehaviour {
 	}
 	void walkAnimation(float value) {
 		if (Mathf.Abs (value) > 0) {
-			animator.SetBool ("walk", true);
+			if (Time.time - walkTime > 4f) {
+				animator.SetBool ("run", true);
+			//	Debug.Log ("run);
+			} else {
+				animator.SetBool ("walk", true);
+
+			}
 		} else {
 			animator.SetBool ("walk", false);
+			animator.SetBool ("run", false);
 		}
 	}
 
