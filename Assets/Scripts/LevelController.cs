@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevelController : MonoBehaviour {
 	public static LevelController levelController;
+	bool hasKey = false;
 	int antidote_number=0;
 	// Use this for initialization
 	void Start () {
@@ -26,5 +27,13 @@ public class LevelController : MonoBehaviour {
 	public bool hasAntidote() {
 
 		return antidote_number != 0;
+	}
+
+	public void setHasKey(bool val) {
+		hasKey = val;
+	}
+
+	public bool getHasKey() {
+		return hasKey;
 	}
 }

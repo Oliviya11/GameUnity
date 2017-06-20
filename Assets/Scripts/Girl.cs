@@ -70,20 +70,20 @@ public class Girl : MonoBehaviour {
 
 	void walk(float value)
 	{
-		
 
 		if (Mathf.Abs (value) > 0) {
 			Vector2 vel = body.velocity;
-			if (canGoOutside || (this.transform.position.x > goFrom && value < 0) || (this.transform.position.x < goTo && value > 0)) {
+			if (canGoOutside || (this.transform.position.x >= goFrom && value < 0) || (this.transform.position.x <= goTo && value > 0)) {
+
 				if (Time.time - walkTime > 4f) {
 					vel.x = value * speed * 1.5f;
 				} else {
 					vel.x = value * speed;
 				}
 				body.velocity = vel;
-			} else {
+			} else  {
 				walkTime = Time.time;
-
+				vel.x = 0;
 			}
 					
 		} else {
