@@ -5,10 +5,11 @@ using UnityEngine;
 public class Girl : MonoBehaviour {
 
 	public AudioClip screamSound = null;
+	public AudioClip painSound = null;
+	public AudioClip hitSound = null;
 	public float speed;
 	public float maxJumpTime = 2f;
 	public float jumpSpeed = 2f;
-
 	public static Girl copy_girl;
 
 	Rigidbody2D body = null;
@@ -17,11 +18,15 @@ public class Girl : MonoBehaviour {
 	bool isGrounded = false;
 	bool jumpActive = false;
 	bool dead = false;
-	bool stand = true;
+	bool canGoOutside = true;
+	bool canSeeHidden = false;
+	bool canMove = true;
 	float jumpTime = 0f;
+	float goFrom, goTo;
 	Transform heroParent = null;
 	float walkTime = 0, waitNearCaveTime = 0;
-	AudioSource screamSource;
+	AudioSource screamSource, painSource, hitSource;
+	Vector3 pos;
 
 	// Use this for initialization
 	void Start () {
@@ -30,20 +35,23 @@ public class Girl : MonoBehaviour {
 		sr = GetComponent<SpriteRenderer> ();
 		animator = GetComponent<Animator> ();
 		initSoundSources ();
-
+		pos = this.transform.position;
 	}
 
 
 	void FixedUpdate () {
 		if (!dead) {
-			float value = Input.GetAxis ("Horizontal");
-			walk (value);
-			flipPicture (value);
-			walkAnimation (value);
-			jump ();
-			checkIfIsGrounded ();
-			jumpAnimation ();
-			heroParent = transform.parent;
+			float value = 0;
+			if (canMove) 
+				value = Input.GetAxis ("Horizontal");
+				walk (value);
+				flipPicture (value);
+				walkAnimation (value);
+				jump ();
+				checkIfIsGrounded ();
+				jumpAnimation ();
+				heroParent = transform.parent;
+			
 		} else {
 			dieAnimation ();
 		}
@@ -53,31 +61,45 @@ public class Girl : MonoBehaviour {
 		screamSource = gameObject.AddComponent<AudioSource> ();
 		screamSource.clip = screamSound;
 
+		painSource = gameObject.AddComponent<AudioSource> ();
+		painSource.clip = painSound;
 
+		hitSource = gameObject.AddComponent<AudioSource> ();
+		hitSource.clip = hitSound;
 	}
 
 	void walk(float value)
 	{
+		
+
 		if (Mathf.Abs (value) > 0) {
 			Vector2 vel = body.velocity;
-			if (Time.time - walkTime > 4f) {
-				vel.x = value * speed*1.5f;
+			if (canGoOutside || (this.transform.position.x > goFrom && value < 0) || (this.transform.position.x < goTo && value > 0)) {
+				if (Time.time - walkTime > 4f) {
+					vel.x = value * speed * 1.5f;
+				} else {
+					vel.x = value * speed;
+				}
+				body.velocity = vel;
 			} else {
-				vel.x = value * speed;
+				walkTime = Time.time;
+
 			}
-			body.velocity = vel;
-			stand = false;
+					
 		} else {
 			walkTime = Time.time;
-			stand = true;
 		}
 		waitNearCaveTime = Time.time;
 	}
 
-	public bool comeInCave() {
-		Debug.Log ((Time.time - waitNearCaveTime) + ", " + stand);
+	public void setCanGoOutside(bool val, float a, float b) {
+		canGoOutside = val;
+		goFrom = a;
+		goTo = b;
+	}
 
-		return (Time.time - waitNearCaveTime) > 0.5f && stand;
+	public bool getCanGoOutside() {
+		return canGoOutside;
 	}
 
 
@@ -107,26 +129,39 @@ public class Girl : MonoBehaviour {
 	}
 
 	void jump() {
-		if (Input.GetButtonDown ("Jump") && isGrounded) {
-			this.jumpActive = true;
-		}
+		 
 
-		if (this.jumpActive) {
-		//	muteMusicOnRun ();
-			if (Input.GetButton ("Jump")) {
-				this.jumpTime += Time.deltaTime;
-				if (this.jumpTime < this.maxJumpTime) {
-					Vector2 vel = body.velocity;
-					vel.y = jumpSpeed * (1.0f - jumpTime / maxJumpTime);
-					body.velocity = vel;
-				}
-			} else {
-				this.jumpActive = false;
-				this.jumpTime = 0;
-			//	soundJump = true;
+			if (Input.GetButtonDown ("Jump") && isGrounded) {
+				this.jumpActive = true;
 			}
-		}
 
+			if (this.jumpActive) {
+				//	muteMusicOnRun ();
+				if (Input.GetButton ("Jump")) {
+					this.jumpTime += Time.deltaTime;
+					if (this.jumpTime < this.maxJumpTime) {
+					
+						  Vector2 vel = body.velocity;
+						  
+
+						
+					if (!canGoOutside && (transform.position.x < goFrom || transform.position.x > goTo)) {
+						vel.y = 0;
+						vel.x = 0;
+						//transform.position = new Vector3(this.transform.position.x, pos.y, this.transform.position.z);
+					} else {
+						vel.y = jumpSpeed * (1.0f - jumpTime / maxJumpTime);
+					}
+						  body.velocity = vel;
+					  
+					}
+				} else {
+					this.jumpActive = false;
+					this.jumpTime = 0;
+					//	soundJump = true;
+				}
+			}
+		
 
 	}
 
@@ -184,5 +219,47 @@ public class Girl : MonoBehaviour {
 	}
 	public void scream() {
 		if (!dead) screamSource.Play ();
+	}
+
+	public void setCanSeeHidden(bool val) {
+		canSeeHidden = val;
+	}
+
+	public bool getCanSeeHidden() {
+		return canSeeHidden;
+	}
+
+	public void setCanMove(bool val) {
+		canMove = val;
+	}
+
+	public bool getCanMove() {
+		return canMove;
+	}
+
+	void OnTriggerEnter2D(Collider2D collider) {
+		
+		CollideWithMonster (collider);
+	}
+
+	void CollideWithMonster(Collider2D collider) {
+		GroundMonster monster = collider.GetComponent<GroundMonster> ();
+		if (monster != null && (!monster.hidden || getCanSeeHidden())) {
+			if (monster.body == collider) {
+				sayAboutPain ();
+				setDead (true);
+			} else if (monster.head == collider && !dead) {
+				smashPlay ();
+				monster.die ();
+			}
+		}
+	}
+
+	void sayAboutPain(){
+		painSource.Play ();
+	}
+
+	void smashPlay() {
+		hitSource.Play ();
 	}
 }

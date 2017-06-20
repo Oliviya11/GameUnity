@@ -21,7 +21,7 @@ public class Spider : MonoBehaviour {
 		moveUp = new Vector2 (0, speed);
 		moveDown = new Vector2 (0, -speed);
 		moveBy = moveDown;
-	//	changing_time = wait_time;
+		changing_time = wait_time;
 		posToMoveUp = pos.y;
 	}
 	
@@ -39,19 +39,20 @@ public class Spider : MonoBehaviour {
 				attack = true;
 			} else if (transform.localPosition.y < posToMoveDown) {
 				moveBy = moveUp;
-				if (!attack)
-					changing_time = 0;
-				else 
-					changing_time = wait_time;
+			   changing_time = wait_time;
+
 			}
 			body.MovePosition (body.position + moveBy * Time.fixedDeltaTime);
 
 		} else {
-			waitForAWhile ();
+			 waitForAWhile ();
 		}
 	}
 	void waitForAWhile() {
-		changing_time -= Time.deltaTime;
+		if (attack)
+			changing_time -= Time.deltaTime;
+		else 
+			changing_time = 0;
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -81,7 +82,7 @@ public class Spider : MonoBehaviour {
 	void OnGirlNoticed() {
 		
 		if (Mathf.Abs (Girl.copy_girl.transform.position.y - transform.position.y) <= radius
-		    && Mathf.Abs (Girl.copy_girl.transform.position.x - transform.position.x) <= 2f && attack) {
+		    && Mathf.Abs (Girl.copy_girl.transform.position.x - transform.position.x) <= 1f && attack) {
 
 			if (Girl.copy_girl.transform.position.y + 1.5 < transform.position.y && attack) {
 				body.MovePosition (body.position + moveDown * Time.fixedDeltaTime);
