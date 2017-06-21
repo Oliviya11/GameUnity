@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Girl : MonoBehaviour {
+	public GameObject prefabBomb;
 
 	public AudioClip screamSound = null;
 	public AudioClip painSound = null;
@@ -54,6 +55,24 @@ public class Girl : MonoBehaviour {
 			
 		} else {
 			dieAnimation ();
+		}
+
+		if(Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+		{
+			Attack();
+		}
+	}
+
+	void Attack()
+	{
+		if (LevelController.levelController.hasBombs()) {
+			Vector3 girlPos = this.transform.position;
+			Debug.Log ("Attack");
+			GameObject obj = GameObject.Instantiate (this.prefabBomb);
+			Bomb bomb = obj.GetComponent<Bomb> ();
+			bomb.setDangerous ();
+			girlPos.y += 0.8f;
+			obj.transform.position = girlPos;
 		}
 	}
 

@@ -6,6 +6,7 @@ public class LevelController : MonoBehaviour {
 	public static LevelController levelController;
 	bool hasKey = false;
 	int antidote_number=0;
+	int bomb_number=0;
 	// Use this for initialization
 	void Start () {
 		levelController = this;
@@ -35,5 +36,17 @@ public class LevelController : MonoBehaviour {
 
 	public bool getHasKey() {
 		return hasKey;
+	}
+
+	public void increaseBombNumber() {
+		bomb_number++;
+	}
+
+	public void decreaseBombNumber() {
+		if (antidote_number > 0) antidote_number--;
+	}
+
+	public bool hasBombs() {
+		return bomb_number != 0;
 	}
 }
