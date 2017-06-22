@@ -13,6 +13,7 @@ public class Girl : MonoBehaviour {
 	public float jumpSpeed = 2f;
 	public static Girl copy_girl;
 
+
 	Rigidbody2D body = null;
 	SpriteRenderer sr = null;
 	Animator animator = null;
@@ -22,6 +23,7 @@ public class Girl : MonoBehaviour {
 	bool canGoOutside = true;
 	bool canSeeHidden = false;
 	bool canMove = true;
+	bool hiddenInCave = false;
 	float jumpTime = 0f;
 	float goFrom, goTo;
 	Transform heroParent = null;
@@ -67,7 +69,6 @@ public class Girl : MonoBehaviour {
 	{
 		if (LevelController.levelController.hasBombs()) {
 			Vector3 girlPos = this.transform.position;
-			Debug.Log ("Attack");
 			GameObject obj = GameObject.Instantiate (this.prefabBomb);
 			Bomb bomb = obj.GetComponent<Bomb> ();
 			bomb.setDangerous ();
@@ -261,6 +262,7 @@ public class Girl : MonoBehaviour {
 		CollideWithMonster (collider);
 	}
 
+
 	void CollideWithMonster(Collider2D collider) {
 		GroundMonster monster = collider.GetComponent<GroundMonster> ();
 		if (monster != null && (!monster.hidden || getCanSeeHidden())) {
@@ -280,5 +282,21 @@ public class Girl : MonoBehaviour {
 
 	void smashPlay() {
 		hitSource.Play ();
+	}
+
+	public bool isDead() {
+		return dead;
+	}
+
+	public bool getWhereLook() {
+		return sr.flipX;
+	}
+
+	public void setHiddenInCave(bool val) {
+		hiddenInCave = val;
+	}
+
+	public bool isHidden() {
+		return hiddenInCave;
 	}
 }

@@ -42,7 +42,7 @@ public class Enter : MonoBehaviour {
 
 	public IEnumerator openCave() {
 		yield return new WaitForSeconds (timeToWaitBeforeOpenning);
-		if (isGirlInCave) {
+		if (isGirlInCave && !Girl.copy_girl.isDead()) {
 			Girl.copy_girl.setCanMove (false);
 			rotator.setCanMoveInCave (false);
 			rotator.rotateSide ();
@@ -50,10 +50,12 @@ public class Enter : MonoBehaviour {
 			if (!rotated) {
 				Girl.copy_girl.setCanGoOutside (false, cur_pos - border_a, cur_pos + border_b);
 			        rotated = true;
+				Girl.copy_girl.setHiddenInCave (true);
 			}
 			else {
 				Girl.copy_girl.setCanGoOutside (true, 0, 0);
 				rotated = false;
+				Girl.copy_girl.setHiddenInCave (false);
 			}
 		}
 			

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour{
-	public bool hidden, explode = false;
+	public bool hidden;
+	bool explode = false;
 	public float timeToWaitBeforeActing;
 	bool isDangerous = false;
-	bool isGirlInteractWithBomb = false;
+	bool isGirlInteractWithBomb = false, isBlackMonsterInteractWithBomb = false;
 	public AudioClip explodeSound = null;
 	AudioSource explodeSource = null;
 
@@ -41,6 +42,12 @@ public class Bomb : MonoBehaviour{
 		}
 	}
 
+	void OnBlackMonsterHit(BlackMonster monster) {
+		if (isDangerous) {
+			StartCoroutine (actBomb (monster));
+		} 
+	}
+
 	public void setDangerous() {
 		isDangerous = true;
 	}
@@ -52,6 +59,13 @@ public class Bomb : MonoBehaviour{
 			OnGirlHit (girl);
 			isGirlInteractWithBomb = true;
 		}
+
+		BlackMonster monster = collider.GetComponent<BlackMonster> ();
+
+		if (monster != null && !hidden) {
+			OnBlackMonsterHit (monster);
+			isBlackMonsterInteractWithBomb = true;
+		}
 	}
 
 	void OnTriggerExit2D(Collider2D collider) {
@@ -59,6 +73,12 @@ public class Bomb : MonoBehaviour{
 
 		if (girl != null) {
 			isGirlInteractWithBomb = false;
+		}
+
+		BlackMonster monster = collider.GetComponent<BlackMonster> ();
+
+		if (monster != null) {
+			isBlackMonsterInteractWithBomb = false;
 		}
 	}
 
@@ -78,6 +98,21 @@ public class Bomb : MonoBehaviour{
 			girl.setDead (true);
 		}
 		yield return new WaitForSeconds (timeToWaitBeforeActing-2);
+		Destroy (gameObject);
+
+	}
+
+	IEnumerator actBomb(BlackMonster monster) {
+		
+		yield return new WaitForSeconds (timeToWaitBeforeActing);
+		explode = true;
+		explodePlay ();
+
+		if (isBlackMonsterInteractWithBomb) {
+			monster.setDead (true);
+		
+		} 
+		yield return new WaitForSeconds (timeToWaitBeforeActing*2);
 		Destroy (gameObject);
 
 	}
