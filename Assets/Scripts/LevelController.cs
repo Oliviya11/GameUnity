@@ -65,7 +65,7 @@ public class LevelController : MonoBehaviour {
 			candle_number--;
 			StartCoroutine (extinguishCandle ());
 			cur_time = Time.time;
-		}
+		} 
 	}
 
 	IEnumerator extinguishCandle() {

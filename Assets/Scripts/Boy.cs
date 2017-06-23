@@ -8,12 +8,15 @@ public class Boy : MonoBehaviour {
 	public float speed;
 	bool dead = false;
 	bool canMove = false;
+	bool canMoveInCave = true;
 	Animator animator = null;
 	SpriteRenderer sr = null;
 	float walkTime = 0;
 	Rigidbody2D body = null;
 	bool canGoOutside = true;
 	AudioSource hurtSource=null;
+	float goFrom, goTo;
+	bool askIfNear = false;
 
 	// Use this for initialization
 	void Start () {
@@ -39,18 +42,24 @@ public class Boy : MonoBehaviour {
 				walk (value);
 				walkAnimation (value);
 				flipPicture (value);
+
+			} else {
+				stop ();
 			}
 		} else {
 			dieAnimation ();
 		}
+		if(askIfNear) setCanMoveInCave(true);
+	
 	}
 
 	void walk(float value)
 	{
 
 		if (Mathf.Abs (value) > 0) {
+			
 			Vector2 vel = body.velocity;
-			if (canGoOutside) {
+			if (canGoOutside || (this.transform.position.x >= goFrom && value < 0) || (this.transform.position.x <= goTo && value > 0)) {
 
 				if (Time.time - walkTime > 4f) {
 					vel.x = value * speed * 1.5f;
@@ -110,13 +119,31 @@ public class Boy : MonoBehaviour {
 		animator.SetBool ("run", false);
 	}
 
-	void hurt() {
+	public void hurt() {
 		hurtSource.Play ();
 	}
+
 	public void giveFreedom() {
 		canMove = true;
 	}
 	public bool isFree() {
 		return canMove;
+	}
+
+	public void setCanMoveInCave(bool val) {
+		if (val) askIfNear = true;
+		if (val == true && Mathf.Abs (this.transform.position.x - Girl.copy_girl.transform.position.x) < 4) {
+			walkTime = Time.time;
+			canMove = true;
+			askIfNear = false;
+		} 
+		else canMove = false;
+	}
+		
+	void stop() {
+		Vector3 vel = body.velocity;
+		vel.x = 0;
+		vel.y = 0;
+		body.velocity = vel;
 	}
 }

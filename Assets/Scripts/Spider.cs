@@ -29,6 +29,7 @@ public class Spider : MonoBehaviour {
 	void FixedUpdate () {
 		move ();
 		OnGirlNoticed ();
+		OnBoyNoticed ();
 	}
 	 
 	void move() {
@@ -63,12 +64,19 @@ public class Spider : MonoBehaviour {
 			girl.scream ();
 			if (!LevelController.levelController.hasAntidote ()) {
 				girl.setDead (true);
-			
 			} else {
 				girl.hurtAnimation ();
 			}
-
 				
+		}
+
+		Boy boy = collider.GetComponent<Boy> ();
+
+		if (boy != null) {
+			//LevelController.levelController.decreaseAntidoteNumber ();
+			boy.hurt();
+			boy.setDead (true);
+
 		}
 	}
 	void OnTriggerExit2D(Collider2D collider) {
@@ -79,12 +87,34 @@ public class Spider : MonoBehaviour {
 		}
 	}
 
-	void OnGirlNoticed() {
-		
-		if (Mathf.Abs (Girl.copy_girl.transform.position.y - transform.position.y) <= radius
-		    && Mathf.Abs (Girl.copy_girl.transform.position.x - transform.position.x) <= 1f && attack) {
 
-			if (Girl.copy_girl.transform.position.y + 1.5 < transform.position.y && attack) {
+
+
+
+
+	void OnGirlNoticed() {
+
+		if (Mathf.Abs (Girl.copy_girl.transform.position.y - transform.position.y) <= radius
+			&& Mathf.Abs (Girl.copy_girl.transform.position.x - transform.position.x) <= 1f && attack) {
+
+			if (Girl.copy_girl.transform.position.y + 1.5 < transform.position.y && attack &&
+			   Mathf.Abs (Girl.copy_girl.transform.position.x - transform.position.x) <= 1f) {
+				body.MovePosition (body.position + moveDown * Time.fixedDeltaTime);
+			} else {
+				attack = false;
+			}
+
+		} 
+	}
+
+
+	void OnBoyNoticed() {
+
+		if (Mathf.Abs (Boy.copy_boy.transform.position.y - transform.position.y) <= radius
+			&& Mathf.Abs (Boy.copy_boy.transform.position.x - transform.position.x) <= 1f && attack) {
+
+			if (Boy.copy_boy.transform.position.y + 1.5 < transform.position.y && attack 
+				&& Mathf.Abs (Boy.copy_boy.transform.position.x - transform.position.x) <= 1f) {
 				body.MovePosition (body.position + moveDown * Time.fixedDeltaTime);
 			} else {
 				attack = false;

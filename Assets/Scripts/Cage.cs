@@ -25,8 +25,8 @@ public class Cage : MonoBehaviour {
 	}
 
 	void destroyWalls() {
-		wall1.destroyWall ();
-		wall2.destroyWall ();
-		wall3.destroyWall ();
+		if (wall1!=null) wall1.destroyWall ();
+		if (wall2!=null) wall2.destroyWall ();
+		if (wall3!=null) wall3.destroyWall ();
 	}
 }

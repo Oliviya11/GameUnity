@@ -157,16 +157,17 @@ public class BlackMonster : MonoBehaviour {
 
 		Girl girl = Girl.copy_girl;
 		float girlPos = girl.transform.position.x;
+		if (girl.isDead ()) muteAttackSound ();
+		if (follow) playAttackSound ();
+		else        muteAttackSound ();
 		if ((((girlPos < pointA.x && girlPos > pointB.x && moveBy < 0) || (girlPos > pointA.x && girlPos < pointB.x && moveBy > 0)
-			&& Mathf.Abs (Girl.copy_girl.transform.position.y - transform.position.y) < 0.5f && !girl.isDead()) || follow ) && canMove && !isDead
-			&& !girl.isHidden()) {
-			speed = SPEED*1.5f;
+		    && Mathf.Abs (Girl.copy_girl.transform.position.y - transform.position.y) < 0.5f && !girl.isDead ()) || follow) && canMove && !isDead
+		    && !girl.isHidden ()) {
+			speed = SPEED * 1.5f;
 			findGirlLocation ();
 			myoldMode = mode;
-
 			follow = true;
-		} 
-		else if (girl.isHidden() && follow) {
+		} else if (girl.isHidden () && follow) {
 			speed = SPEED;
 			mode = oldMode;
 			if (mode == Mode.GoToA) {
@@ -176,8 +177,8 @@ public class BlackMonster : MonoBehaviour {
 			}
 
 			follow = false;
-		}
-			
+			muteAttackSound ();
+		} 
 		
 	}
 
@@ -197,6 +198,7 @@ public class BlackMonster : MonoBehaviour {
 
 		Girl girl = collider.GetComponent<Girl> ();
 		if (girl != null && !girl.isDead() && !girl.isHidden()) {
+			girl.hitWithBlackMonster();
 			girl.setDead (true);
 			canMove = false;
 		}
@@ -213,5 +215,11 @@ public class BlackMonster : MonoBehaviour {
 		canMove = false;
 	}
 
+	void playAttackSound() {
+		if (!attackSource.isPlaying) attackSource.Play ();
+	}
 
+	void muteAttackSound() {
+		attackSource.Stop ();
+	}
 }

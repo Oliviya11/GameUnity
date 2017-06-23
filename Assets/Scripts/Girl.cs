@@ -8,6 +8,7 @@ public class Girl : MonoBehaviour {
 	public AudioClip screamSound = null;
 	public AudioClip painSound = null;
 	public AudioClip hitSound = null;
+	public AudioClip hitBlackMonsterSound = null;
 	public float speed;
 	public float maxJumpTime = 2f;
 	public float jumpSpeed = 2f;
@@ -28,7 +29,7 @@ public class Girl : MonoBehaviour {
 	float goFrom, goTo;
 	Transform heroParent = null;
 	float walkTime = 0, waitNearCaveTime = 0;
-	AudioSource screamSource, painSource, hitSource;
+	AudioSource screamSource, painSource, hitSource, hitBlackMonsterSource;
 	Vector3 pos;
 
 	// Use this for initialization
@@ -86,7 +87,11 @@ public class Girl : MonoBehaviour {
 
 		hitSource = gameObject.AddComponent<AudioSource> ();
 		hitSource.clip = hitSound;
+
+		hitBlackMonsterSource = gameObject.AddComponent<AudioSource> ();
+		hitBlackMonsterSource.clip = hitBlackMonsterSound;
 	}
+
 
 	void walk(float value)
 	{
@@ -298,5 +303,9 @@ public class Girl : MonoBehaviour {
 
 	public bool isHidden() {
 		return hiddenInCave;
+	}
+
+	public void hitWithBlackMonster() {
+		hitBlackMonsterSource.Play ();
 	}
 }

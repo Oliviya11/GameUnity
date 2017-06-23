@@ -20,8 +20,9 @@ public class Enter : MonoBehaviour {
 		else 
 			Girl.copy_girl.setCanSeeHidden (false);
 
-		if (rotator.getCanMoveInCave ())
+		if (rotator.getCanMoveInCave ()) {
 			Girl.copy_girl.setCanMove (true);
+		}
 
 	}
 	void OnTriggerEnter2D(Collider2D collider) {
@@ -51,11 +52,13 @@ public class Enter : MonoBehaviour {
 				Girl.copy_girl.setCanGoOutside (false, cur_pos - border_a, cur_pos + border_b);
 			        rotated = true;
 				Girl.copy_girl.setHiddenInCave (true);
+     			Boy.copy_boy.setCanMoveInCave (false);
 			}
 			else {
 				Girl.copy_girl.setCanGoOutside (true, 0, 0);
 				rotated = false;
 				Girl.copy_girl.setHiddenInCave (false);
+		    	Boy.copy_boy.setCanMoveInCave (true);
 			}
 		}
 			
