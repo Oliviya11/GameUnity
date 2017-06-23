@@ -49,7 +49,7 @@ public class LevelController : MonoBehaviour {
 	}
 
 	public void decreaseBombNumber() {
-		if (antidote_number > 0) antidote_number--;
+		if (antidote_number > 0) bomb_number--;
 	}
 
 	public bool hasBombs() {

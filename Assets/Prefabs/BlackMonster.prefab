@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 967ccd8f8371c60438809d71511e1ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackSound: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 04a65bce11836fc41b34025de3f68cb5, type: 3}
   dieSound: {fileID: 0}
   moveBy: 3
   SPEED: 1

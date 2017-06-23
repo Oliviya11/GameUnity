@@ -6,10 +6,10 @@ public class GroundMonster : MonoBehaviour {
 
 	public Collider2D head, body;
 	public bool hidden;
-	Renderer rend = null;
+//	Renderer rend = null;
 	// Use this for initialization
 	void Start () {
-		rend = GetComponent<Renderer> ();
+	//	rend = GetComponent<Renderer> ();
 	}
 
 	// Update is called once per frame

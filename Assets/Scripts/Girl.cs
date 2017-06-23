@@ -28,9 +28,9 @@ public class Girl : MonoBehaviour {
 	float jumpTime = 0f;
 	float goFrom, goTo;
 	Transform heroParent = null;
-	float walkTime = 0, waitNearCaveTime = 0;
+	float walkTime = 0;
 	AudioSource screamSource, painSource, hitSource, hitBlackMonsterSource;
-	Vector3 pos;
+//	Vector3 pos;
 
 	// Use this for initialization
 	void Start () {
@@ -39,7 +39,7 @@ public class Girl : MonoBehaviour {
 		sr = GetComponent<SpriteRenderer> ();
 		animator = GetComponent<Animator> ();
 		initSoundSources ();
-		pos = this.transform.position;
+	//	pos = this.transform.position;
 	}
 
 
@@ -75,6 +75,7 @@ public class Girl : MonoBehaviour {
 			bomb.setDangerous ();
 			girlPos.y += 0.8f;
 			obj.transform.position = girlPos;
+			LevelController.levelController.decreaseBombNumber ();
 		}
 	}
 
@@ -114,7 +115,7 @@ public class Girl : MonoBehaviour {
 		} else {
 			walkTime = Time.time;
 		}
-		waitNearCaveTime = Time.time;
+//		waitNearCaveTime = Time.time;
 	}
 
 	public void setCanGoOutside(bool val, float a, float b) {
@@ -142,7 +143,6 @@ public class Girl : MonoBehaviour {
 		if (Mathf.Abs (value) > 0) {
 			if (Time.time - walkTime > 4f) {
 				animator.SetBool ("run", true);
-				//animator.SetBool ("die", true);
 			} else {
 				animator.SetBool ("walk", true);
 

@@ -8,14 +8,12 @@ public class Boy : MonoBehaviour {
 	public float speed;
 	bool dead = false;
 	bool canMove = false;
-	bool canMoveInCave = true;
 	Animator animator = null;
 	SpriteRenderer sr = null;
 	float walkTime = 0;
 	Rigidbody2D body = null;
 	bool canGoOutside = true;
 	AudioSource hurtSource=null;
-	float goFrom, goTo;
 	bool askIfNear = false;
 
 	// Use this for initialization
@@ -49,6 +47,7 @@ public class Boy : MonoBehaviour {
 		} else {
 			dieAnimation ();
 		}
+			
 		if(askIfNear) setCanMoveInCave(true);
 	
 	}
@@ -59,7 +58,7 @@ public class Boy : MonoBehaviour {
 		if (Mathf.Abs (value) > 0) {
 			
 			Vector2 vel = body.velocity;
-			if (canGoOutside || (this.transform.position.x >= goFrom && value < 0) || (this.transform.position.x <= goTo && value > 0)) {
+			if (canGoOutside) {
 
 				if (Time.time - walkTime > 4f) {
 					vel.x = value * speed * 1.5f;

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 61875630097293854}
   - component: {fileID: 114269370029848110}
   m_Layer: 0
-  m_Name: Candle
+  m_Name: candle31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1895491306815268}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.67, y: -0.5, z: -8}
+  m_LocalPosition: {x: 1.388, y: -0.121, z: 1}
   m_LocalScale: {x: 0.14, y: 0.14, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bcdb4d508063083448092d77167699f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hidden: 0
+  hidden: 1
 --- !u!212 &212259435505877298
 SpriteRenderer:
   m_ObjectHideFlags: 1

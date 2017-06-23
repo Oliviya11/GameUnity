@@ -9,21 +9,39 @@ public class Enter : MonoBehaviour {
 	public float border_a;
 	public float border_b;
 	bool rotated = false;
+	public List<Collectable> items;
+	public List<Bomb> bombs;
 	// Use this for initialization
 	void Start () {
 
 	}
 
 	void FixedUpdate () {
-		if (rotator.isRotated ())
-			Girl.copy_girl.setCanSeeHidden (true);
-		else 
-			Girl.copy_girl.setCanSeeHidden (false);
-
+		if (rotator.isRotated ()) {
+			items.ForEach (setFalse);
+			bombs.ForEach (setFalseBomb);
+		} else { 
+			items.ForEach (setTrue);
+			bombs.ForEach (setTrueBomb);
+		}
 		if (rotator.getCanMoveInCave ()) {
 			Girl.copy_girl.setCanMove (true);
 		}
 
+	}
+
+	void setFalse(Collectable c) {
+		c.setHidden (false);
+	}
+	void setTrue(Collectable c) {
+		c.setHidden (true);
+	}
+
+	void setFalseBomb(Bomb b) {
+		b.setHidden (false);
+	}
+	void setTrueBomb(Bomb b) {
+		b.setHidden (true);
 	}
 	void OnTriggerEnter2D(Collider2D collider) {
 		Girl girl = collider.GetComponent<Girl> ();

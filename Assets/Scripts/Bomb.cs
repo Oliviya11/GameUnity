@@ -54,7 +54,7 @@ public class Bomb : MonoBehaviour{
 
 	void OnTriggerEnter2D(Collider2D collider) {
 		Girl girl = collider.GetComponent<Girl> ();
-		if (girl != null && (!hidden || girl.getCanSeeHidden())) {
+		if (girl != null && (!hidden )) {
 			OnGirlHit (girl);
 			isGirlInteractWithBomb = true;
 		}
@@ -114,5 +114,9 @@ public class Bomb : MonoBehaviour{
 		yield return new WaitForSeconds (timeToWaitBeforeActing*2);
 		Destroy (gameObject);
 
+	}
+
+	public void setHidden(bool val) {
+		hidden = val;
 	}
 }

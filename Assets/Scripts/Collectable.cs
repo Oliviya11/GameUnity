@@ -11,13 +11,20 @@ public class Collectable : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D collider) {
 		Girl girl = collider.GetComponent<Girl> ();
 
-		if (girl != null && (!hidden || girl.getCanSeeHidden())) {
+		if (girl != null && (!hidden)) {
 			OnGirlHit (girl);
-		    CollectedHide ();
-		}
+			CollectedHide ();
+
+		} 
+			
+	
 	}
 
 	public void CollectedHide() {
 		Destroy (gameObject);
+	}
+
+	public void setHidden(bool val) {
+		hidden = val;
 	}
 }

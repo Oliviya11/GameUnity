@@ -16,8 +16,7 @@ public class BlackMonster : MonoBehaviour {
 	SpriteRenderer sr = null;
 	Animator animator = null;
 	Mode mode, oldMode;
-	Renderer rend = null;
-	Vector3 mypos;
+//	Vector3 mypos;
 	public float jumpHeighht;
 	bool canMove = true;
 	bool isDead = false;
@@ -46,8 +45,6 @@ public class BlackMonster : MonoBehaviour {
 		sr = GetComponent<SpriteRenderer> ();
 		mode = Mode.GoToB;
 		animator = GetComponent<Animator> ();
-		rend = GetComponent<Renderer> ();
-		mypos = this.transform.position;
 		speed = SPEED;
 
 	}
@@ -153,7 +150,7 @@ public class BlackMonster : MonoBehaviour {
 	}
 
 	 void OnGirlNoticed() {
-		Mode myoldMode=Mode.Stand;
+//		Mode myoldMode=Mode.Stand;
 
 		Girl girl = Girl.copy_girl;
 		float girlPos = girl.transform.position.x;
@@ -163,9 +160,9 @@ public class BlackMonster : MonoBehaviour {
 		if ((((girlPos < pointA.x && girlPos > pointB.x && moveBy < 0) || (girlPos > pointA.x && girlPos < pointB.x && moveBy > 0)
 		    && Mathf.Abs (Girl.copy_girl.transform.position.y - transform.position.y) < 0.5f && !girl.isDead ()) || follow) && canMove && !isDead
 		    && !girl.isHidden ()) {
-			speed = SPEED * 1.5f;
+			speed = SPEED * 2f;
 			findGirlLocation ();
-			myoldMode = mode;
+//			myoldMode = mode;
 			follow = true;
 		} else if (girl.isHidden () && follow) {
 			speed = SPEED;
