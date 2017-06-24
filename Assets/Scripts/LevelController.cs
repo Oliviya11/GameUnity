@@ -9,6 +9,7 @@ public class LevelController : MonoBehaviour {
 	public float timeOfCandlesBurning;
 	public float extinguishTime, afterDeathTime;
 	public CandleBackground candle_background;
+	static bool music=true, sound=true;
 
 	float cur_time = 0;
 	bool hasKey = false;
@@ -16,8 +17,9 @@ public class LevelController : MonoBehaviour {
 	int bomb_number=0;
 	int candle_number=1;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		levelController = this;
+		setInfo ();
 	}
 	
 	// Update is called once per frame
@@ -81,6 +83,7 @@ public class LevelController : MonoBehaviour {
 		if (candle_number == 0) {
 			yield return new WaitForSeconds (extinguishTime);
 			candle_background.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0.95f);
+			Girl.copy_girl.setDead (true);
 		}
 	}
 
@@ -98,4 +101,54 @@ public class LevelController : MonoBehaviour {
 		SceneManager.LoadScene ("Level1");
 	}
 
+	public int getCandleNumber() {
+		return candle_number;
+	}
+
+	public int getBombNumber() {
+		return bomb_number;
+	}
+
+	public int getAntidoteNumber() {
+		return antidote_number;
+	}
+
+	public bool getIfHasKey() {
+		return hasKey;
+	}
+	public static void setMusic(bool val) {
+		music = val;
+	}
+	public static void setSound(bool val) {
+		sound = val;
+	}
+
+	public static bool getMusic() {
+		return music;
+	}
+	public static bool getSound() {
+		return sound;
+	}
+
+	public void writeMusic() {
+		MusicAndSound newMusicAndSound = new MusicAndSound ();
+		newMusicAndSound.sound = sound;
+		newMusicAndSound.music = music;
+		string str2 = JsonUtility.ToJson (newMusicAndSound);
+		PlayerPrefs.SetString ("MusicAndSound", str2);
+	}
+
+	public void save() {
+		PlayerPrefs.Save ();
+	}
+
+	public void setInfo() {
+		string str2 = PlayerPrefs.GetString ("MusicAndSound", null);
+		MusicAndSound musicAndSound = JsonUtility.FromJson<MusicAndSound> (str2);
+	
+		if (musicAndSound != null) {
+			music = musicAndSound.music;
+			sound = musicAndSound.sound;
+		}
+	}
 }

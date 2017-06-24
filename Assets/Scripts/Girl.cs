@@ -334,6 +334,14 @@ public class Girl : MonoBehaviour {
 	public bool getIsFreeBoy() {
 		return isFreeBoy;
 	}
+	public void muteOrActiveBackgroundMusic() {
+
+		if (!LevelController.getMusic ()) {
+			this.GetComponent<AudioSource> ().Stop();
+		} else if (!this.GetComponent<AudioSource> ().isPlaying) {
+			this.GetComponent<AudioSource> ().Play();
+		}
+	}
 }
 
 

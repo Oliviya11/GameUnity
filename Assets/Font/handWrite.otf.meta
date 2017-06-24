@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 6d0d4601c4447dc448fbc98c3c191bd2
+timeCreated: 1498315729
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: StudioScriptC
+  fontNames:
+  - StudioScriptC
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
