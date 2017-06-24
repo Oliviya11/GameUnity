@@ -20,6 +20,7 @@ public class Cage : MonoBehaviour {
 		Girl girl = collider.GetComponent<Girl> ();
 		if (girl != null && LevelController.levelController.getHasKey()) {
 			Boy.copy_boy.giveFreedom ();
+			Girl.copy_girl.setIsFreeBoy ();
 				destroyWalls ();
 		}
 	}

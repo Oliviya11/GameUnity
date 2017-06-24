@@ -54,7 +54,7 @@ public class Bomb : MonoBehaviour{
 
 	void OnTriggerEnter2D(Collider2D collider) {
 		Girl girl = collider.GetComponent<Girl> ();
-		if (girl != null && (!hidden )) {
+		if (girl != null && !hidden) {
 			OnGirlHit (girl);
 			isGirlInteractWithBomb = true;
 		}

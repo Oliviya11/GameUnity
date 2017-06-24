@@ -24,9 +24,6 @@ public class Enter : MonoBehaviour {
 			items.ForEach (setTrue);
 			bombs.ForEach (setTrueBomb);
 		}
-		if (rotator.getCanMoveInCave ()) {
-			Girl.copy_girl.setCanMove (true);
-		}
 
 	}
 
@@ -61,8 +58,8 @@ public class Enter : MonoBehaviour {
 
 	public IEnumerator openCave() {
 		yield return new WaitForSeconds (timeToWaitBeforeOpenning);
-		if (isGirlInCave && !Girl.copy_girl.isDead()) {
-			Girl.copy_girl.setCanMove (false);
+		if (isGirlInCave && !Girl.copy_girl.isDead() && Girl.copy_girl.getTimeOfStanding()>timeToWaitBeforeOpenning) {
+			
 			rotator.setCanMoveInCave (false);
 			rotator.rotateSide ();
 			float cur_pos = Girl.copy_girl.transform.position.x;
@@ -79,7 +76,9 @@ public class Enter : MonoBehaviour {
 		    	Boy.copy_boy.setCanMoveInCave (true);
 			}
 		}
-			
-
+	  
 	}
+
+
+
 }

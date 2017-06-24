@@ -12,6 +12,8 @@ public class Girl : MonoBehaviour {
 	public float speed;
 	public float maxJumpTime = 2f;
 	public float jumpSpeed = 2f;
+	bool isFreeBoy = false;
+	float timeOfStanding = 0f;
 	public static Girl copy_girl;
 
 
@@ -46,7 +48,7 @@ public class Girl : MonoBehaviour {
 	void FixedUpdate () {
 		if (!dead) {
 			float value = 0;
-			if (canMove) 
+			if (canMove) {
 				value = Input.GetAxis ("Horizontal");
 				walk (value);
 				flipPicture (value);
@@ -55,15 +57,25 @@ public class Girl : MonoBehaviour {
 				checkIfIsGrounded ();
 				jumpAnimation ();
 				heroParent = transform.parent;
-			
+				if(Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
+				{
+					Attack();
+				}
+
+			}
+
 		} else {
 			dieAnimation ();
+			LevelController.levelController.onGirlDeath (this);
 		}
 
-		if(Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
-		{
-			Attack();
-		}
+
+	}
+
+	public void alive() {
+		dead = false;
+		canMove = true;
+		Debug.Log ("alive");
 	}
 
 	void Attack()
@@ -98,6 +110,8 @@ public class Girl : MonoBehaviour {
 	{
 
 		if (Mathf.Abs (value) > 0) {
+			timeOfStanding = 0f;
+
 			Vector2 vel = body.velocity;
 			if (canGoOutside || (this.transform.position.x >= goFrom && value < 0) || (this.transform.position.x <= goTo && value > 0)) {
 
@@ -113,6 +127,7 @@ public class Girl : MonoBehaviour {
 			}
 					
 		} else {
+			timeOfStanding = Time.time;
 			walkTime = Time.time;
 		}
 //		waitNearCaveTime = Time.time;
@@ -308,4 +323,17 @@ public class Girl : MonoBehaviour {
 	public void hitWithBlackMonster() {
 		hitBlackMonsterSource.Play ();
 	}
+	public float getTimeOfStanding() {
+		return timeOfStanding;
+	}
+
+	public void setIsFreeBoy() {
+		isFreeBoy = true;
+	}
+
+	public bool getIsFreeBoy() {
+		return isFreeBoy;
+	}
 }
+
+

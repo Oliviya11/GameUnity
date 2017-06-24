@@ -145,4 +145,8 @@ public class Boy : MonoBehaviour {
 		vel.y = 0;
 		body.velocity = vel;
 	}
+
+	public bool isDead() {
+		return dead;
+	}
 }

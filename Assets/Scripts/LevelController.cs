@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour {
+	public int attempt = 3;
 	public static LevelController levelController;
 	public float timeOfCandlesBurning;
-	public float extinguishTime;
+	public float extinguishTime, afterDeathTime;
 	public CandleBackground candle_background;
 
 	float cur_time = 0;
@@ -80,6 +82,20 @@ public class LevelController : MonoBehaviour {
 			yield return new WaitForSeconds (extinguishTime);
 			candle_background.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0.95f);
 		}
+	}
+
+	void decreaseAttempts() {
+		attempt--;
+	}
+
+	public void onGirlDeath(Girl girl){
+		StartCoroutine (waitAfterDeath ());
+
+	}
+
+	IEnumerator waitAfterDeath() {
+		yield return new WaitForSeconds (afterDeathTime);
+		SceneManager.LoadScene ("Level1");
 	}
 
 }
