@@ -28,11 +28,13 @@ public class LosePanel : MonoBehaviour {
 
 	}
 	public void OnCloseBtnAndBackground() {
-		StartCoroutine(LevelController.levelController.openIntroScene());
+		LevelController.levelController.openIntroScene();
+	//	Debug.Log ("introScene");
 	}
 
 	public void OnRepeatBtn() {
-		StartCoroutine(LevelController.levelController.repeatLevel());
+		LevelController.levelController.repeatLevel();
+	//	Debug.Log ("repeat");
 	}
 
 	// Update is called once per frame

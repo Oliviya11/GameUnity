@@ -46,6 +46,7 @@ public class Boy : MonoBehaviour {
 			}
 		} else {
 			dieAnimation ();
+			LevelController.levelController.onGirlDeath ();
 		}
 			
 		if(askIfNear) setCanMoveInCave(true);

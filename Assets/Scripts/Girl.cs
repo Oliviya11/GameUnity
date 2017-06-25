@@ -16,6 +16,7 @@ public class Girl : MonoBehaviour {
 	float timeOfStanding = 0f;
 	public static Girl copy_girl;
 	public bool onlyAnim;
+	bool attack = true;
 
 	Rigidbody2D body = null;
 	SpriteRenderer sr = null;
@@ -71,7 +72,7 @@ public class Girl : MonoBehaviour {
 			} else {
 				if (LevelController.levelController.getCandleNumber () != 0)
 					dieAnimation ();
-				LevelController.levelController.onGirlDeath (this);
+				LevelController.levelController.onGirlDeath ();
 			}
 		}
 
@@ -85,17 +86,26 @@ public class Girl : MonoBehaviour {
 
 	void Attack()
 	{
-		if (LevelController.levelController.hasBombs()) {
-			Vector3 girlPos = this.transform.position;
-			GameObject obj = GameObject.Instantiate (this.prefabBomb);
-			Bomb bomb = obj.GetComponent<Bomb> ();
-			bomb.setDangerous ();
-			girlPos.y += 0.8f;
-			obj.transform.position = girlPos;
-			LevelController.levelController.decreaseBombNumber ();
+		if (LevelController.levelController.hasBombs() && attack) {
+			StartCoroutine (putBomb ());
 		}
 	}
 
+	IEnumerator putBomb() {
+		Vector3 girlPos = this.transform.position;
+		GameObject obj = GameObject.Instantiate (this.prefabBomb);
+		Bomb bomb = obj.GetComponent<Bomb> ();
+		bomb.setDangerous ();
+		girlPos.y += 0.8f;
+		obj.transform.position = girlPos;
+	
+		LevelController.levelController.decreaseBombNumber ();
+	
+		attack = false;
+		yield return new WaitForSeconds (1.5f);
+		attack = true;
+
+	}
 	void initSoundSources() {
 		screamSource = gameObject.AddComponent<AudioSource> ();
 		screamSource.clip = screamSound;
@@ -263,7 +273,7 @@ public class Girl : MonoBehaviour {
 		dead = val;
 	}
 	public void scream() {
-		if (!dead) screamSource.Play ();
+		if (!dead && LevelController.getSound()) screamSource.Play ();
 	}
 
 	public void setCanSeeHidden(bool val) {

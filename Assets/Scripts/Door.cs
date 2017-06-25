@@ -10,6 +10,11 @@ public class Door : MonoBehaviour {
 		Girl girl = collider.GetComponent<Girl> ();
 	
 		if (girl != null && !girl.isDead() && !Boy.copy_boy.isDead() && !girl.isHidden() && girl.getIsFreeBoy()) {
+			float time = PlayerPrefs.GetFloat ("bestTime");
+			if (LevelController.levelController.getMaybeBestTime () > time) {
+				LevelController.levelController.setTime ();
+				LevelController.levelController.save ();
+			}
 			SceneManager.LoadScene ("WinScene");
 		}
 	}

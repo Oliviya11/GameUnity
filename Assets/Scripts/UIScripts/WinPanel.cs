@@ -26,7 +26,7 @@ public class WinPanel : MonoBehaviour {
 
 
 	public void OnCloseBtnAndBackground() {
-		StartCoroutine(LevelController.levelController.openIntroScene());
+		LevelController.levelController.openIntroScene();
 	}
 
 

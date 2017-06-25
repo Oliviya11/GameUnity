@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour {
-	int attempt = 0;
+	
 	public static LevelController levelController;
 	public float timeOfCandlesBurning;
 	public float extinguishTime, afterDeathTime;
 	public CandleBackground candle_background;
 	public GameObject losePrefab;
 	static bool music, sound;
-
 	float cur_time, main_time;
 	bool hasKey = false;
 	int antidote_number=0;
@@ -29,7 +28,7 @@ public class LevelController : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		main_time = Time.timeSinceLevelLoad;
-		if (Girl.copy_girl!=null &&!Girl.copy_girl.isDead())
+		if (Girl.copy_girl!=null &&!Girl.copy_girl.isDead() && candle_background!=null)
 		       decreaseCandleNumber ();
 	}
 
@@ -96,9 +95,10 @@ public class LevelController : MonoBehaviour {
 
 
 
-	public void onGirlDeath(Girl girl){
+	public void onGirlDeath(){
 		StartCoroutine (openLosePanel());
 	}
+
 
 	public IEnumerator openLosePanel() {
 		yield return new WaitForSeconds (afterDeathTime);
@@ -114,8 +114,7 @@ public class LevelController : MonoBehaviour {
 		Time.timeScale = 0;
 	}
 
-	public IEnumerator repeatLevel() {
-		yield return new WaitForSeconds (1);
+	public void repeatLevel() {
 		SceneManager.LoadScene ("Level1");
 	}
 
@@ -172,9 +171,16 @@ public class LevelController : MonoBehaviour {
 		}
 	}
 
-	public IEnumerator openIntroScene() {
-		yield return new WaitForSeconds (1);
+	public void openIntroScene() {
 		SceneManager.LoadScene ("IntroScene");
+	}
+
+	public float getMaybeBestTime() {
+		return main_time/60;
+	}
+
+	public void setTime() {
+		PlayerPrefs.SetFloat ("bestTime", Mathf.Round(main_time/60));
 	}
 
 

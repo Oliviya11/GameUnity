@@ -5,10 +5,8 @@ using UnityEngine;
 public class MiniLevelController : MonoBehaviour {
 	public GameObject winPrefab;
 	public float afterWinTime;
-	bool music, sound;
 	// Use this for initialization
 	void Start () {
-		setInfo ();
 		StartCoroutine (openWinPanel ());
 	}
 	
@@ -21,14 +19,5 @@ public class MiniLevelController : MonoBehaviour {
 		//Отримати доступ до компоненту (щоб передати параметри)
 		obj.GetComponent<WinPanel>();
 	}
-
-	public void setInfo() {
-		string str2 = PlayerPrefs.GetString ("MusicAndSound", null);
-		MusicAndSound musicAndSound = JsonUtility.FromJson<MusicAndSound> (str2);
-
-		if (musicAndSound != null) {
-			music = musicAndSound.music;
-			sound = musicAndSound.sound;
-		}
-	}
+		
 }

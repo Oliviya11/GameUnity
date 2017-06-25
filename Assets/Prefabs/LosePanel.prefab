@@ -901,7 +901,7 @@ MonoBehaviour:
   anchorOffset: 0
   softBorderPadding: 1
   renderQueue: 0
-  startingRenderQueue: 3007
+  startingRenderQueue: 3002
   mClipTexture: {fileID: 0}
   mAlpha: 1
   mClipping: 0
@@ -953,7 +953,7 @@ MonoBehaviour:
   keepCrispWhenShrunk: 1
   mTrueTypeFont: {fileID: 12800000, guid: a974eec058cc07d4190b4de2e1ffed21, type: 3}
   mFont: {fileID: 0}
-  mText: Lose level
+  mText: You lose...
   mFontSize: 180
   mFontStyle: 0
   mAlignment: 0
