@@ -105,7 +105,8 @@ public class Bomb : MonoBehaviour{
 		
 		yield return new WaitForSeconds (timeToWaitBeforeActing);
 		explode = true;
-		explodePlay ();
+		if (LevelController.getSound())
+	    	explodePlay ();
 
 		if (isBlackMonsterInteractWithBomb) {
 			monster.setDead (true);

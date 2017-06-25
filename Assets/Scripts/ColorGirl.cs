@@ -14,7 +14,8 @@ public class ColorGirl : ColorHuman {
 	}
 
 	void playPianoIntroSound() {
-		 pianoSource.Play ();
+		if (LevelController.getMusic())
+		   pianoSource.Play ();
 	} 
 
 	public IEnumerator waitAndRun() {

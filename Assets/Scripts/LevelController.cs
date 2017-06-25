@@ -4,27 +4,33 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour {
-	public int attempt = 3;
+	int attempt = 0;
 	public static LevelController levelController;
 	public float timeOfCandlesBurning;
 	public float extinguishTime, afterDeathTime;
 	public CandleBackground candle_background;
-	static bool music=true, sound=true;
+	public GameObject losePrefab;
+	static bool music, sound;
 
-	float cur_time = 0;
+	float cur_time, main_time;
 	bool hasKey = false;
 	int antidote_number=0;
 	int bomb_number=0;
-	int candle_number=1;
+	int candle_number=0;
 	// Use this for initialization
 	void Awake () {
 		levelController = this;
 		setInfo ();
+		Time.timeScale = 1;
+		increaseCandleNumber ();
+
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		decreaseCandleNumber ();
+		main_time = Time.timeSinceLevelLoad;
+		if (Girl.copy_girl!=null &&!Girl.copy_girl.isDead())
+		       decreaseCandleNumber ();
 	}
 
 	public void increaseAntidoteNumber() {
@@ -65,7 +71,8 @@ public class LevelController : MonoBehaviour {
 	}
 
 	void decreaseCandleNumber() {
-		if (Time.time - cur_time > timeOfCandlesBurning && candle_number > 0) {
+		
+		if (main_time - cur_time > timeOfCandlesBurning && candle_number > 0) {
 			candle_number--;
 			StartCoroutine (extinguishCandle ());
 			cur_time = Time.time;
@@ -87,19 +94,32 @@ public class LevelController : MonoBehaviour {
 		}
 	}
 
-	void decreaseAttempts() {
-		attempt--;
-	}
+
 
 	public void onGirlDeath(Girl girl){
-		StartCoroutine (waitAfterDeath ());
-
+		StartCoroutine (openLosePanel());
 	}
 
-	IEnumerator waitAfterDeath() {
+	public IEnumerator openLosePanel() {
 		yield return new WaitForSeconds (afterDeathTime);
+		Girl.copy_girl.setDead (false);
+		Girl.copy_girl.setCanMove (true);
+		Girl.copy_girl.muteBackgroundMusic ();
+		//Знайти батьківський елемент
+		GameObject parent = UICamera.first.transform.parent.gameObject;
+		//Створити Prefab
+		GameObject obj = NGUITools.AddChild (parent, losePrefab);
+		//Отримати доступ до компоненту (щоб передати параметри)
+		obj.GetComponent<SettingsPanel>();
+		Time.timeScale = 0;
+	}
+
+	public IEnumerator repeatLevel() {
+		yield return new WaitForSeconds (0);
 		SceneManager.LoadScene ("Level1");
 	}
+
+
 
 	public int getCandleNumber() {
 		return candle_number;
@@ -151,4 +171,11 @@ public class LevelController : MonoBehaviour {
 			sound = musicAndSound.sound;
 		}
 	}
+
+	public IEnumerator openIntroScene() {
+		yield return new WaitForSeconds (0);
+		SceneManager.LoadScene ("IntroScene");
+	}
+
+
 }

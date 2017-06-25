@@ -33,10 +33,12 @@ public class Girl : MonoBehaviour {
 	float walkTime = 0;
 	AudioSource screamSource, painSource, hitSource, hitBlackMonsterSource;
 //	Vector3 pos;
-
+	void Awake() {
+		copy_girl = this;
+		muteOrActiveBackgroundMusic ();
+	}
 	// Use this for initialization
 	void Start () {
-		copy_girl = this;
 		body = this.GetComponent<Rigidbody2D> ();
 		sr = GetComponent<SpriteRenderer> ();
 		animator = GetComponent<Animator> ();
@@ -65,7 +67,8 @@ public class Girl : MonoBehaviour {
 			}
 
 		} else {
-			dieAnimation ();
+			if (LevelController.levelController.getCandleNumber()!=0)
+			         dieAnimation ();
 			LevelController.levelController.onGirlDeath (this);
 		}
 
@@ -289,6 +292,7 @@ public class Girl : MonoBehaviour {
 			if (monster.body == collider) {
 				sayAboutPain ();
 				setDead (true);
+				setCanMove (false);
 			} else if (monster.head == collider && !dead) {
 				smashPlay ();
 				monster.die ();
@@ -297,10 +301,12 @@ public class Girl : MonoBehaviour {
 	}
 
 	void sayAboutPain(){
-		painSource.Play ();
+		if (LevelController.getSound())
+		 painSource.Play ();
 	}
 
 	void smashPlay() {
+	  if (LevelController.getSound())
 		hitSource.Play ();
 	}
 
@@ -321,7 +327,8 @@ public class Girl : MonoBehaviour {
 	}
 
 	public void hitWithBlackMonster() {
-		hitBlackMonsterSource.Play ();
+		if (LevelController.getSound())
+	     	hitBlackMonsterSource.Play ();
 	}
 	public float getTimeOfStanding() {
 		return timeOfStanding;
@@ -335,12 +342,16 @@ public class Girl : MonoBehaviour {
 		return isFreeBoy;
 	}
 	public void muteOrActiveBackgroundMusic() {
-
+		Debug.Log (LevelController.getMusic ());
 		if (!LevelController.getMusic ()) {
 			this.GetComponent<AudioSource> ().Stop();
 		} else if (!this.GetComponent<AudioSource> ().isPlaying) {
 			this.GetComponent<AudioSource> ().Play();
 		}
+	}
+
+	public void muteBackgroundMusic() {
+		this.GetComponent<AudioSource> ().Stop();
 	}
 }
 

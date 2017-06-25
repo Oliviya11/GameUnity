@@ -14,7 +14,7 @@ public class LosePanel : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-//		HeroRabbit.rabbit_copy.setCanMove (false);
+		if (Girl.copy_girl!=null) Girl.copy_girl.setCanMove (false);
 		if (LevelController.getSound ()) {
 			loseSource = gameObject.AddComponent<AudioSource> ();
 			loseSource.clip = loseSound;
@@ -27,12 +27,12 @@ public class LosePanel : MonoBehaviour {
 		repeatButton.signalOnClick.AddListener (this.OnCloseBtnAndBackground);
 
 	}
-	public void 	OnCloseBtnAndBackground() {
-		//StartCoroutine(LevelController.current.openMenu());
+	public void OnCloseBtnAndBackground() {
+		StartCoroutine(LevelController.levelController.openIntroScene());
 	}
 
 	public void OnRepeatBtn() {
-		//StartCoroutine(LevelController.current.openLevel());
+		StartCoroutine(LevelController.levelController.repeatLevel());
 	}
 
 	// Update is called once per frame

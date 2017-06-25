@@ -197,6 +197,7 @@ public class BlackMonster : MonoBehaviour {
 		if (girl != null && !girl.isDead() && !girl.isHidden()) {
 			girl.hitWithBlackMonster();
 			girl.setDead (true);
+			girl.setCanMove (false);
 			canMove = false;
 		}
 	}
@@ -213,7 +214,7 @@ public class BlackMonster : MonoBehaviour {
 	}
 
 	void playAttackSound() {
-		if (!attackSource.isPlaying) attackSource.Play ();
+		if (!attackSource.isPlaying && LevelController.getSound()) attackSource.Play ();
 	}
 
 	void muteAttackSound() {

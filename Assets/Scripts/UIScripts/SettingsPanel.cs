@@ -61,8 +61,8 @@ public class SettingsPanel : MonoBehaviour {
 			OnMusic ();
 		}
 		//saveing not only when win or lose...
-	//	LevelController.levelController.writeMusic ();
-	//	LevelController.levelController.save ();
+		LevelController.levelController.writeMusic ();
+		LevelController.levelController.save ();
 	}
 
 	void startMusic() {

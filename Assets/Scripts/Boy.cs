@@ -119,7 +119,8 @@ public class Boy : MonoBehaviour {
 	}
 
 	public void hurt() {
-		hurtSource.Play ();
+		if (LevelController.getSound())
+	    	hurtSource.Play ();
 	}
 
 	public void giveFreedom() {

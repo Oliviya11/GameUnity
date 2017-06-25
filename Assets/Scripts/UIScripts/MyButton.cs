@@ -16,9 +16,9 @@ public class MyButton : MonoBehaviour {
 
 	}
 	public void _onClick() {
-//		if (LevelController.getSound ()) {
+		if (LevelController.getSound ()) {
 			source.Play ();
-	//	}
+		}
 		signalOnClick.Invoke ();
 	}
 
