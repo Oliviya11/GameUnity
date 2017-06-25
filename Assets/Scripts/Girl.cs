@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Girl : MonoBehaviour {
 	public GameObject prefabBomb;
-
+	public bool flip;
 	public AudioClip screamSound = null;
 	public AudioClip painSound = null;
 	public AudioClip hitSound = null;
@@ -15,7 +15,7 @@ public class Girl : MonoBehaviour {
 	bool isFreeBoy = false;
 	float timeOfStanding = 0f;
 	public static Girl copy_girl;
-
+	public bool onlyAnim;
 
 	Rigidbody2D body = null;
 	SpriteRenderer sr = null;
@@ -35,12 +35,14 @@ public class Girl : MonoBehaviour {
 //	Vector3 pos;
 	void Awake() {
 		copy_girl = this;
+
 		muteOrActiveBackgroundMusic ();
 	}
 	// Use this for initialization
 	void Start () {
 		body = this.GetComponent<Rigidbody2D> ();
 		sr = GetComponent<SpriteRenderer> ();
+		sr.flipX = flip;
 		animator = GetComponent<Animator> ();
 		initSoundSources ();
 	//	pos = this.transform.position;
@@ -48,30 +50,30 @@ public class Girl : MonoBehaviour {
 
 
 	void FixedUpdate () {
-		if (!dead) {
-			float value = 0;
-			if (canMove) {
-				value = Input.GetAxis ("Horizontal");
-				walk (value);
-				flipPicture (value);
-				walkAnimation (value);
-				jump ();
-				checkIfIsGrounded ();
-				jumpAnimation ();
-				heroParent = transform.parent;
-				if(Input.GetKeyDown(KeyCode.LeftAlt) || Input.GetKeyDown(KeyCode.RightAlt))
-				{
-					Attack();
+		if (!onlyAnim) {
+			if (!dead) {
+				float value = 0;
+				if (canMove) {
+					value = Input.GetAxis ("Horizontal");
+					walk (value);
+					flipPicture (value);
+					walkAnimation (value);
+					jump ();
+					checkIfIsGrounded ();
+					jumpAnimation ();
+					heroParent = transform.parent;
+					if (Input.GetKeyDown (KeyCode.LeftAlt) || Input.GetKeyDown (KeyCode.RightAlt)) {
+						Attack ();
+					}
+
 				}
 
+			} else {
+				if (LevelController.levelController.getCandleNumber () != 0)
+					dieAnimation ();
+				LevelController.levelController.onGirlDeath (this);
 			}
-
-		} else {
-			if (LevelController.levelController.getCandleNumber()!=0)
-			         dieAnimation ();
-			LevelController.levelController.onGirlDeath (this);
 		}
-
 
 	}
 
@@ -342,7 +344,7 @@ public class Girl : MonoBehaviour {
 		return isFreeBoy;
 	}
 	public void muteOrActiveBackgroundMusic() {
-		Debug.Log (LevelController.getMusic ());
+//		Debug.Log (LevelController.getMusic ());
 		if (!LevelController.getMusic ()) {
 			this.GetComponent<AudioSource> ().Stop();
 		} else if (!this.GetComponent<AudioSource> ().isPlaying) {

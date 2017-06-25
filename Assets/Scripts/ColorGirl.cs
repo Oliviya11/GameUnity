@@ -7,10 +7,18 @@ public class ColorGirl : ColorHuman {
 	public AudioClip pianoIntroSound = null;
 	AudioSource pianoSource = null;
 	public static ColorGirl copy_girl;
+	public bool onlyAnim;
+
 	void Awake() {
+
 		copy_girl = this;
 		pianoSource = gameObject.AddComponent<AudioSource> ();
 		pianoSource.clip = pianoIntroSound;
+	}
+
+	void FixedUpdate() {
+		if(!onlyAnim)
+			base.FixedUpdate ();
 	}
 
 	void playPianoIntroSound() {

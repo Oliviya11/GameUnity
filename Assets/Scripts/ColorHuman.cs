@@ -19,7 +19,7 @@ public class ColorHuman : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void FixedUpdate () {
+	protected void FixedUpdate () {
 		if (!canWalk) {
 			stop ();
 			stopWalkAnimation ();

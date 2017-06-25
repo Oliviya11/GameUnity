@@ -110,12 +110,12 @@ public class LevelController : MonoBehaviour {
 		//Створити Prefab
 		GameObject obj = NGUITools.AddChild (parent, losePrefab);
 		//Отримати доступ до компоненту (щоб передати параметри)
-		obj.GetComponent<SettingsPanel>();
+		obj.GetComponent<LosePanel>();
 		Time.timeScale = 0;
 	}
 
 	public IEnumerator repeatLevel() {
-		yield return new WaitForSeconds (0);
+		yield return new WaitForSeconds (1);
 		SceneManager.LoadScene ("Level1");
 	}
 
@@ -173,7 +173,7 @@ public class LevelController : MonoBehaviour {
 	}
 
 	public IEnumerator openIntroScene() {
-		yield return new WaitForSeconds (0);
+		yield return new WaitForSeconds (1);
 		SceneManager.LoadScene ("IntroScene");
 	}
 
