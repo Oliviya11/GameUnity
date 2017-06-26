@@ -17,6 +17,8 @@ public class Girl : MonoBehaviour {
 	public static Girl copy_girl;
 	public bool onlyAnim;
 	bool attack = true;
+	public AudioClip keySound = null;
+	AudioSource keySource = null;
 
 	Rigidbody2D body = null;
 	SpriteRenderer sr = null;
@@ -118,6 +120,9 @@ public class Girl : MonoBehaviour {
 
 		hitBlackMonsterSource = gameObject.AddComponent<AudioSource> ();
 		hitBlackMonsterSource.clip = hitBlackMonsterSound;
+
+		keySource = gameObject.AddComponent<AudioSource> ();
+		keySource.clip = keySound;
 	}
 
 
@@ -364,6 +369,11 @@ public class Girl : MonoBehaviour {
 
 	public void muteBackgroundMusic() {
 		this.GetComponent<AudioSource> ().Stop();
+	}
+
+	public void playKeySound() {
+		if (LevelController.getSound())
+		    keySource.Play ();
 	}
 }
 

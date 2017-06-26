@@ -11,7 +11,7 @@ public class Door : MonoBehaviour {
 	
 		if (girl != null && !girl.isDead() && !Boy.copy_boy.isDead() && !girl.isHidden() && girl.getIsFreeBoy()) {
 			float time = PlayerPrefs.GetFloat ("bestTime");
-			if (LevelController.levelController.getMaybeBestTime () > time) {
+			if (LevelController.levelController.getMaybeBestTime () < time) {
 				LevelController.levelController.setTime ();
 				LevelController.levelController.save ();
 			}
